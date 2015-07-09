@@ -1,0 +1,21 @@
+appServerType = <%= @buildomatic_appservertype %>
+appServerDir = <%= @buildomatic_appserverdir %>
+<%- if @buildomatic_catalina_home -%>
+CATALINA_HOME = <%= @buildomatic_catalina_home %>
+<%- end -%>
+<%- if @buildomatic_catalina_base -%>
+CATALINA_BASE = <%= @buildomatic_catalina_base %>
+<%- end -%>
+<%- if @buildomatic_jboss_profile -%>
+jboss.profile = <%= @buildomatic_jboss_profile %>
+<%- end -%>
+dbType = <%= @buildomatic_dbtype %>
+dbHost = <%= @buildomatic_dbhost %>
+dbUsername = <%= @buildomatic_dbusername %>
+dbPassword = <%= @buildomatic_dbpassword %>
+<%- if @buildomatic_extras.empty? != true  -%>
+<%- @buildomatic_extras.sort_by {|key, value| key}.each do |key, value| -%>
+buildomatic_extras.<%= key %> = "<%= value %>"
+<%- end -%>
+<%- end -%>
+preserve_master_properties_footer_comments_when_encrypting_buildomatic = true

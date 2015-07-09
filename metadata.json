@@ -1,0 +1,24 @@
+{
+  "name": "arin-jasperreports_server",
+  "version": "0.0.1",
+  "author": "Steven Bambling",
+  "summary": null,
+  "license": "Apache 2.0",
+  "source": "",
+  "project_page": null,
+  "issues_url": null,
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.2.0"
+    },
+    {
+      "name": "nanliu/archive",
+      "version_requirement": ">=0.3.0"
+    },
+    {
+      "name": "maestrodev/wget",
+      "version_requirement": ">=1.7.0"
+    }
+  ]
+}
