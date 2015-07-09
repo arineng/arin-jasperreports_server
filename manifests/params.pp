@@ -10,4 +10,10 @@ class jasperreports_server::params {
   $buildomatic_dbusername = 'postgres'
   $buildomatic_dbpassword = 'changeme'
   $buildomatic_extras = {}
+  $ad_connection_source = 'ldaps://example.dev:636'
+  $ad_userdn = 'jaspertest@example'
+  $ad_password = 'passwordblah'
+  $ad_group_base = 'OU=Jaspersoft,OU=Groups,DC=example,DC=dev'
+  $ad_user_base = 'OU=Users,DC=example,DC=dev'
+  $ad_org_roles = [ 'jasperGroup1', 'jasperGroup2', ]
 }

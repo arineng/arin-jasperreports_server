@@ -22,6 +22,7 @@
 #
 class jasperreports_server (
   $pkg_version               = undef,
+  $external_ad_auth          = false,
   $source_url                = undef,
   $nexus_url                 = undef,
   $nexus_repository          = undef,
@@ -38,6 +39,12 @@ class jasperreports_server (
   $buildomatic_dbusername    = $jasperreports_server::params::buildomatic_dbusername,
   $buildomatic_dbpassword    = $jasperreports_server::params::buildomatic_dbpassword,
   $buildomatic_extras        = $jasperreports_server::params::buildomatic_extras,
+  $ad_connection_source      = $jasperreports_server::params::ad_connection_source,
+  $ad_userdn                 = $jasperreports_server::params::ad_userdn,
+  $ad_password               = $jasperreports_server::params::ad_password,
+  $ad_group_base             = $jasperreports_server::params::ad_group_base,
+  $ad_user_base              = $jasperreports_server::params::ad_user_base,
+  $ad_org_roles              = $jasperreports_server::params::ad_org_roles,
 ) inherits jasperreports_server::params {
 
   anchor { 'jasperreports_server::start': }
