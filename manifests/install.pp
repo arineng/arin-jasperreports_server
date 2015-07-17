@@ -90,6 +90,7 @@ class jasperreports_server::install (
       packaging    => $nexus_packaging,
       classifier   => $nexus_classifier,
       owner        => $buildomatic_user,
+      user         => $buildomatic_user,
       group        => $buildomatic_user,
       extract      => true,
       extract_path => '/tmp',
