@@ -25,6 +25,7 @@ class jasperreports_server::install (
   $nexus_gav                 = $jasperreports_server::nexus_gav,
   $nexus_packaging           = $jasperreports_server::nexus_packaging,
   $nexus_classifier          = $jasperreports_server::nexus_classifier,
+  $buildomatic_user          = $jasperreports_server::buildomatic_user,
   $buildomatic_appservertype = $jasperreports_server::buildomatic_appservertype,
   $buildomatic_appserverdir  = $jasperreports_server::buildomatic_appserverdir,
   $buildomatic_catalina_home = $jasperreports_server::buildomatic_catalina_home,
@@ -73,7 +74,7 @@ class jasperreports_server::install (
       verbose     => false,
     } ->
     exec { 'Unzip JasperReports Server Binary':
-      user    => 'tomcat',
+      user    => $buildomatic_user,
       path    => '/bin:/usr/bin:/sbin:/usr/sbin',
       command => "unzip -q /tmp/jasperreports-server-cp-${pkg_version}-bin.zip -d /tmp",
       onlyif  => "test ! -d /tmp/jasperreports-server-cp-${pkg_version}-bin",
@@ -88,8 +89,8 @@ class jasperreports_server::install (
       repository   => $nexus_repository,
       packaging    => $nexus_packaging,
       classifier   => $nexus_classifier,
-      owner        => 'root',
-      group        => 'wheel',
+      owner        => $buildomatic_user,
+      group        => $buildomatic_user,
       extract      => true,
       extract_path => '/tmp',
       creates      => "/tmp/jasperreports-server-cp-${pkg_version}-bin",
@@ -100,8 +101,8 @@ class jasperreports_server::install (
   file { 'default_master.properties':
     ensure  => present,
     path    => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/default_master.properties",
-    owner   => root,
-    group   => root,
+    owner   => $buildomatic_user,
+    group   => $buildomatic_user,
     content => template('jasperreports_server/default_master.properties.erb'),
   } ->
   # Run the js-install with minimal flag
@@ -110,6 +111,7 @@ class jasperreports_server::install (
     cwd     => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic",
     command => 'js-install-ce.sh minimal',
     creates => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/logs",
+    user    => $buildomatic_user,
   }
 
 }

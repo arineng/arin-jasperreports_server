@@ -29,6 +29,7 @@ class jasperreports_server (
   $nexus_gav                 = undef,
   $nexus_packaging           = undef,
   $nexus_classifier          = undef,
+  $buildomatic_user          = $jasperreports_server::params::buildomatic_user,
   $buildomatic_appservertype = $jasperreports_server::params::buildomatic_appservertype,
   $buildomatic_appserverdir  = $jasperreports_server::params::buildomatic_appserverdir,
   $buildomatic_catalina_home = $jasperreports_server::params::buildomatic_catalina_home,
