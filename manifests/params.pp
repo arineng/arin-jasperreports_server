@@ -1,6 +1,6 @@
 # JasperReports Server Parameters
 class jasperreports_server::params {
-  $buildomatic_user = 'tomcat'
+  $buildomatic_user = 'root'
   $buildomatic_appservertype = 'tomcat8'
   $buildomatic_appserverdir = '/opt/apache-tomcat'
   $buildomatic_catalina_home = undef

@@ -113,6 +113,12 @@ class jasperreports_server::install (
     command => 'js-install-ce.sh minimal',
     creates => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/logs",
     user    => $buildomatic_user,
+  } ->
+  # Dirty hack because of issues getting js-install to run as non-root user
+  exec { 'Update Jasper WebApp Ownership':
+    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+    command => "chown -R tomcat:tomcat ${buildomatic_appserverdir}/webapps/jasperserver",
+    unless  => "stat -c %U ${buildomatic_appserverdir}/webapps/jasperserver | grep -q 'tomcat'",
   }
 
 }
