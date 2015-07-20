@@ -94,7 +94,7 @@ class jasperreports_server::install (
       group        => $buildomatic_user,
       extract      => true,
       extract_path => '/tmp',
-      creates      => "/tmp/jasperreports-server-cp-${pkg_version}-bin",
+      creates      => "${buildomatic_appserverdir}/webapps/jasperserver",
       require      => Class['archive'],
       before       => File['default_master.properties'],
     }
@@ -105,20 +105,23 @@ class jasperreports_server::install (
     owner   => $buildomatic_user,
     group   => $buildomatic_user,
     content => template('jasperreports_server/default_master.properties.erb'),
+    require => [ Archive::Nexus["/tmp/jasperreports-server-cp-${pkg_version}-bin.zip"], Exec['Unzip JasperReports Server Binary'], ],
   } ->
   # Run the js-install with minimal flag
   exec { 'Run js-install minimal':
     path    => "/bin:/usr/bin:/sbin:/usr/sbin:/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic",
     cwd     => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic",
     command => 'js-install-ce.sh minimal',
-    creates => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/logs",
+    creates => "${buildomatic_appserverdir}/webapps/jasperserver",
     user    => $buildomatic_user,
   } ->
   # Dirty hack because of issues getting js-install to run as non-root user
   exec { 'Update Jasper WebApp Ownership':
-    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
-    command => "chown -R tomcat:tomcat ${buildomatic_appserverdir}/webapps/jasperserver",
-    unless  => "stat -c %U ${buildomatic_appserverdir}/webapps/jasperserver | grep -q 'tomcat'",
+    path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+    command     => "chown -R tomcat:tomcat ${buildomatic_appserverdir}/webapps/jasperserver",
+    unless      => "stat -c %U ${buildomatic_appserverdir}/webapps/jasperserver | grep -q 'tomcat'",
+    subscribe   => Exec['Run js-install minimal'],
+    refreshonly => true,
   }
 
 }
