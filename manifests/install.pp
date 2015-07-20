@@ -105,7 +105,7 @@ class jasperreports_server::install (
     owner   => $buildomatic_user,
     group   => $buildomatic_user,
     content => template('jasperreports_server/default_master.properties.erb'),
-    require => [ Archive::Nexus["/tmp/jasperreports-server-cp-${pkg_version}-bin.zip"], Exec['Unzip JasperReports Server Binary'], ],
+    onlyif  => "test -d /tmp/jasperreports-server-cp-${pkg_version}-bin", 
   } ->
   # Run the js-install with minimal flag
   exec { 'Run js-install minimal':
