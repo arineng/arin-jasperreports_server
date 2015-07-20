@@ -64,42 +64,43 @@ class jasperreports_server::install (
     $nsource_url = $source_url
   }
 
-  if ( $nsource_url ) and ( $nexus_url == undef ) {
-    include wget
+  # Check to see if the app directory is already installed
+  if ! exists("${buildomatic_appserverdir}/webapps/jasperserver") {
+    if ( $nsource_url ) and ( $nexus_url == undef ) {
+      include wget
 
-    wget::fetch { 'Download JasperReports Server Binary':
-      source      => $nsource_url,
-      destination => "/tmp/jasperreports-server-cp-${pkg_version}-bin.zip",
-      timeout     => 0,
-      verbose     => false,
-    } ->
-    exec { 'Unzip JasperReports Server Binary':
-      user    => $buildomatic_user,
-      path    => '/bin:/usr/bin:/sbin:/usr/sbin',
-      command => "unzip -q /tmp/jasperreports-server-cp-${pkg_version}-bin.zip -d /tmp",
-      onlyif  => "test ! -d /tmp/jasperreports-server-cp-${pkg_version}-bin",
-      before  => File['default_master.properties']
+      wget::fetch { 'Download JasperReports Server Binary':
+        source      => $nsource_url,
+        destination => "/tmp/jasperreports-server-cp-${pkg_version}-bin.zip",
+        timeout     => 0,
+        verbose     => false,
+      } ->
+      exec { 'Unzip JasperReports Server Binary':
+        user    => $buildomatic_user,
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+        command => "unzip -q /tmp/jasperreports-server-cp-${pkg_version}-bin.zip -d /tmp",
+        onlyif  => "test ! -d /tmp/jasperreports-server-cp-${pkg_version}-bin",
+        before  => File['default_master.properties']
+      }
     }
-  }
-  elsif ( $nexus_url != undef ) {
-    archive::nexus { "/tmp/jasperreports-server-cp-${pkg_version}-bin.zip":
-      ensure       => present,
-      url          => $nexus_url,
-      gav          => $nexus_gav,
-      repository   => $nexus_repository,
-      packaging    => $nexus_packaging,
-      classifier   => $nexus_classifier,
-      owner        => $buildomatic_user,
-      user         => $buildomatic_user,
-      group        => $buildomatic_user,
-      extract      => true,
-      extract_path => '/tmp',
-      creates      => "${buildomatic_appserverdir}/webapps/jasperserver",
-      require      => Class['archive'],
-      before       => File['default_master.properties'],
+    elsif ( $nexus_url != undef ) {
+      archive::nexus { "/tmp/jasperreports-server-cp-${pkg_version}-bin.zip":
+        ensure       => present,
+        url          => $nexus_url,
+        gav          => $nexus_gav,
+        repository   => $nexus_repository,
+        packaging    => $nexus_packaging,
+        classifier   => $nexus_classifier,
+        owner        => $buildomatic_user,
+        user         => $buildomatic_user,
+        group        => $buildomatic_user,
+        extract      => true,
+        extract_path => '/tmp',
+        creates      => "${buildomatic_appserverdir}/webapps/jasperserver",
+        require      => Class['archive'],
+        before       => File['default_master.properties'],
+      }
     }
-  }
-  if ! exists(${buildomatic_appserverdir}/webapps/jasperserver) {
     file { 'default_master.properties':
       ensure  => present,
       path    => "/tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/default_master.properties",
