@@ -17,4 +17,5 @@ class jasperreports_server::params {
   $ad_group_base = 'OU=Jaspersoft,OU=Groups,DC=example,DC=dev'
   $ad_user_base = 'OU=Users,DC=example,DC=dev'
   $ad_org_roles = [ 'jasperGroup1', 'jasperGroup2', ]
+  $sql_validation = true
 }

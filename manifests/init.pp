@@ -46,6 +46,7 @@ class jasperreports_server (
   $ad_group_base             = $jasperreports_server::params::ad_group_base,
   $ad_user_base              = $jasperreports_server::params::ad_user_base,
   $ad_org_roles              = $jasperreports_server::params::ad_org_roles,
+  $sql_validation            = $jasperreports_server::params::sql_validation,
 ) inherits jasperreports_server::params {
 
   anchor { 'jasperreports_server::start': }

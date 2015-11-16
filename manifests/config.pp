@@ -22,6 +22,7 @@ class jasperreports_server::config (
   $ad_group_base        = $jasperreports_server::ad_group_base,
   $ad_user_base         = $jasperreports_server::ad_user_base,
   $ad_org_roles         = $jasperreports_server::ad_org_roles,
+  $sql_validation       = $jasperreports_server::sql_validation,
 ) {
 
   if ( $external_ad_auth == true ) {
@@ -34,5 +35,10 @@ class jasperreports_server::config (
       mode    => '0770',
       content => template('jasperreports_server/applicationContext-externalAuth-LDAP.xml.erb'),
     }
+  }
+  file_line { 'disable_sql_validation':
+    path  => '/opt/apache-tomcat/webapps/jasperserver/WEB-INF/classes/esapi/security-config.properties',
+    line  => "security.validation.sql.on=${sql_validation}",
+    match => '^security.validation.sql.on',
   }
 }
