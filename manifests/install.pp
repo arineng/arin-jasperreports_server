@@ -116,6 +116,7 @@ class jasperreports_server::install (
       command => 'js-install-ce.sh minimal',
       creates => "${buildomatic_appserverdir}/webapps/jasperserver",
       user    => $buildomatic_user,
+      timeout => '400',
     } ->
     # Dirty hack because of issues getting js-install to run as non-root user
     exec { 'Update Jasper WebApp Ownership':
