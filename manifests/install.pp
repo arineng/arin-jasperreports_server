@@ -103,7 +103,7 @@ class jasperreports_server::install (
 
   file { 'default_master.properties':
     ensure  => present,
-    path    => '/opt/arin/tmp/default_master.properties',
+    path    => "$buildomatic_appserverdir/jasper_default_master.properties",
     owner   => root,
     group   => root,
     mode    => '0700',
@@ -112,7 +112,7 @@ class jasperreports_server::install (
 
   exec { 'Symlink default_master.properties':
     path    => '/bin:/usr/bin:/sbin:/usr/sbin',
-    command => "ln -s /opt/arin/tmp/default_master.properties /tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/default_master.properties",
+    command => "ln -s $buildomatic_appserverdir/jasper_default_master.properties /tmp/jasperreports-server-cp-${pkg_version}-bin/buildomatic/default_master.properties",
     unless  => "test -d ${buildomatic_appserverdir}/webapps/jasperserver",
     require => File['default_master.properties'],
   } ->
