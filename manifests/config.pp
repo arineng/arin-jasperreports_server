@@ -37,7 +37,7 @@ class jasperreports_server::config (
     }
   }
   file_line { 'disable_sql_validation':
-    path  => '/opt/apache-tomcat/webapps/jasperserver/WEB-INF/classes/esapi/security-config.properties',
+    path  => "${jasperreports_server::buildomatic_appserverdir}/webapps/jasperserver/WEB-INF/classes/esapi/security-config.properties",
     line  => "security.validation.sql.on=${sql_validation}",
     match => '^security.validation.sql.on',
   }
