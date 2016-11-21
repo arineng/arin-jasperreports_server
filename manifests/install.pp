@@ -39,8 +39,6 @@ class jasperreports_server::install (
 ) inherits jasperreports_server::params {
 
   include stdlib
-  # Include archive class to install required faraday gems
-  include ::archive
 
   if $pkg_version == undef {
     fail("${title}: pkg_version not set")
@@ -83,6 +81,9 @@ class jasperreports_server::install (
     }
   }
   elsif ( $nexus_url != undef ) {
+    # Include archive class to install required faraday gems
+    include ::archive
+    
     archive::nexus { "/tmp/jasperreports-server-cp-${pkg_version}-bin.zip":
       ensure       => present,
       url          => $nexus_url,
